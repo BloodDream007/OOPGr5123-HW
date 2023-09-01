@@ -1,6 +1,6 @@
 package Classes;
 
-import Interfaces.iActorBehaviour;
+import Interfaces.*;
 
 public class TaxInspector implements iActorBehaviour {
 

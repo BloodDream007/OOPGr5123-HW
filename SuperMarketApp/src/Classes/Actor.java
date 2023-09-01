@@ -1,8 +1,8 @@
 package Classes;
 
-import Interfaces.iActorBehaviour;
+import Interfaces.*;
 
-public abstract class Actor implements iActorBehaviour {
+public abstract class Actor implements iActorBehaviour{
 
     protected String name;
     protected boolean isTakeOrder;

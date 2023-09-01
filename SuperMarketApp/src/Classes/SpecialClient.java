@@ -1,6 +1,7 @@
 package Classes;
+import Interfaces.*;
 
-public class SpecialClient extends Actor  {
+public class SpecialClient extends Actor implements iReturnOrder  {
 
     private int idVIP;
 
@@ -47,6 +48,17 @@ public class SpecialClient extends Actor  {
     public void setIdVIP(int idVIP) {
         this.idVIP = idVIP;
     }
+
+    @Override
+    public boolean haveCheck() {
+        return false;
+    }
+
+    @Override
+    public boolean returnable() {
+        return false;
+    }
+
 
     // public int getIdVIP() {
     //     return idVIP;
