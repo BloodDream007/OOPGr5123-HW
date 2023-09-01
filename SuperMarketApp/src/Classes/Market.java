@@ -4,55 +4,49 @@ import Interfaces.iActorBehaviour;
 import Interfaces.iMarketBehaviour;
 import Interfaces.iQueueBehaviour;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import static Util.Logger.LOGGER;
-
 
 public class Market implements iMarketBehaviour, iQueueBehaviour {
     private int clientCount = 0;
 
-
     private List<iActorBehaviour> queue;
 
     public Market() {
-        this.queue = new ArrayList<iActorBehaviour>();
+        this.queue = new ArrayList<>();
     }
 
     @Override
     public void acceptToMarket(iActorBehaviour actor) {
         takeInQueue(actor);
-        LOGGER.log(Level.INFO, "Client : " + actor.getActor().getName() + " has been added");
-        if (actor.getActor() instanceof AuctionClient ) {
-            LOGGER.log(Level.INFO, "Add Auction Client");
-            clientCount++;
-            LOGGER.info(clientCount  + " = Auction Clients ");
-        }
+        LOGGER.info("Client : " + actor.getActor().getName() + " has been added");
 
-        if (clientCount > AuctionClient.getParticipants()){
-            LOGGER.log(Level.WARNING, "Превышено кол-во участников в акции");
+        if (actor.getActor() instanceof AuctionClient) {
+            LOGGER.info("Add Auction Client");
+            clientCount++;
+            LOGGER.info(clientCount + " = Auction Clients");
+
+            if (clientCount > AuctionClient.getParticipants()) {
+                LOGGER.warning("Превышено кол-во участников в акции");
+            }
         }
     }
 
     @Override
     public void takeInQueue(iActorBehaviour actor) {
         this.queue.add(actor);
-        LOGGER.log(Level.INFO, actor.getActor().getName() + " клиент добавлен в очередь ");
+        LOGGER.info(actor.getActor().getName() + " клиент добавлен в очередь");
     }
 
     @Override
     public void releaseFromMarket(List<Actor> actors) {
         for (Actor actor : actors) {
-            LOGGER.log(Level.INFO, actor.getName() + "  клиент ушел из магазина ");
+            LOGGER.info(actor.getName() + "  клиент ушел из магазина ");
             queue.remove(actor);
         }
-
     }
 
     @Override
@@ -67,7 +61,7 @@ public class Market implements iMarketBehaviour, iQueueBehaviour {
         for (iActorBehaviour actor : queue) {
             if (actor.isMakeOrder()) {
                 actor.setTakeOrder(true);
-                LOGGER.log(Level.INFO, actor.getActor().getName() + "  клиент получил свой заказ ");
+                LOGGER.info(actor.getActor().getName() + "  клиент получил свой заказ ");
             }
         }
     }
@@ -78,7 +72,7 @@ public class Market implements iMarketBehaviour, iQueueBehaviour {
         for (iActorBehaviour actor : queue) {
             if (actor.isTakeOrder()) {
                 releaseActors.add(actor.getActor());
-                LOGGER.log(Level.INFO, actor.getActor().getName() + "  клиент ушел из очереди ");
+                LOGGER.info(actor.getActor().getName() + "  клиент ушел из очереди ");
             }
         }
         releaseFromMarket(releaseActors);
@@ -89,10 +83,8 @@ public class Market implements iMarketBehaviour, iQueueBehaviour {
         for (iActorBehaviour actor : queue) {
             if (!actor.isMakeOrder()) {
                 actor.setMakeOrder(true);
-                LOGGER.log(Level.INFO, actor.getActor().getName() + "  клиент сделал заказ ");
+                LOGGER.info(actor.getActor().getName() + "  клиент сделал заказ ");
             }
         }
-
     }
-
 }
